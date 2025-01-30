@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casino de los Sueños 777</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #2A0944;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #3B185F;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(169, 92, 232, 0.3);
+            position: relative;
+        }
+
+        h1 {
+            color: #FFD700;
+            font-size: 2.8em;
+            text-shadow: 2px 2px 4px #000;
+            margin-bottom: 30px;
+        }
+
+        .slot-machine {
+            background: #511281;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reels {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            perspective: 1000px;
+        }
+
+        .reel {
+            width: 120px;
+            height: 120px;
+            background: #6C4A8C;
+            border-radius: 10px;
+            font-size: 4em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: inset 0 0 15px rgba(0,0,0,0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+
+        button {
+            background: #9C51E0;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        button:hover {
+            background: #B76DEE;
+            transform: scale(1.05);
+        }
+
+        .probabilidades {
+            background: #4B3869;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+
+        .probabilidades h2 {
+            color: #FFA500;
+            margin-bottom: 15px;
+        }
+
+        @keyframes girar {
+            0% { transform: rotateX(0deg); }
+            100% { transform: rotateX(360deg); }
+        }
+
+        .girando {
+            animation: girar 0.5s infinite linear;
+        }
+
+        @keyframes beso {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-100vh) scale(3); opacity: 0; }
+        }
+
+        .beso-animacion {
+            position: fixed;
+            font-size: 80px;
+            opacity: 0;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .beso-activo {
+            animation: beso 2s ease-out forwards;
+        }
+
+        .notificacion-especial {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9);
+            padding: 20px;
+            border-radius: 15px;
+            color: #FF006E;
+            font-size: 1.5em;
+            z-index: 1001;
+            border: 2px solid #FF006E;
+            box-shadow: 0 0 20px #FF006E;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎰 Casino de los Sueños 777 🎰</h1>
+        
+        <div class="slot-machine">
+            <div class="reels">
+                <div id="reel1" class="reel">🍒</div>
+                <div id="reel2" class="reel">🍋</div>
+                <div id="reel3" class="reel">🍊</div>
+            </div>
+            <button onclick="girar()">¡QUIERO GIRAR Y GANAR!</button>
+        </div>
+
+        <div class="probabilidades">
+            <h2>🌟 Probabilidades de Premios 🌟</h2>
+            <p>🥇 Oro (3 cerezas): 5%</p>
+            <p>🥈 Plata: 15%</p>
+            <p>🥉 Bronce: 30%</p>
+        </div>
+    </div>
+
+    <div class="beso-animacion" id="beso">💋</div>
+    <div class="notificacion-especial" id="notificacionEspecial">
+        ¡GANASTE EL PREMIO ESPECIAL DE LABIOS DE CEREZA!<br>
+        Contacta a Anthrés para redimir tu premio
+    </div>
+
+    <script>
+        const simbolos = ['🍒', '🍋', '🍊', '🍉', '🍇', '🍎', '🥉', '🥈'];
+        
+        function girar() {
+            const reels = document.querySelectorAll('.reel');
+            const resultado = calcularResultado();
+            
+            // Animación de giro mejorada
+            reels.forEach(reel => {
+                reel.style.animation = 'girar 0.3s infinite linear';
+            });
+
+            setTimeout(() => {
+                reels.forEach((reel, index) => {
+                    reel.style.animation = '';
+                    reel.textContent = resultado.simbolos[index];
+                });
+
+                if (resultado.premio === 'oro') {
+                    mostrarEfectoEspecial();
+                    setTimeout(() => {
+                        document.getElementById('notificacionEspecial').style.display = 'block';
+                        setTimeout(() => {
+                            document.getElementById('notificacionEspecial').style.display = 'none';
+                        }, 3000);
+                    }, 500);
+                } else if (resultado.premio) {
+                    alert(`¡Felicidades! Ganaste medalla de ${resultado.premio.toUpperCase()}`);
+                } else {
+                    alert('¡Sigue intentando!');
+                }
+            }, 2000);
+        }
+
+        function mostrarEfectoEspecial() {
+            const beso = document.getElementById('beso');
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const clone = beso.cloneNode(true);
+                    clone.style.left = `${Math.random() * 100}%`;
+                    clone.style.fontSize = `${Math.random() * 40 + 40}px`;
+                    clone.classList.add('beso-activo');
+                    document.body.appendChild(clone);
+                    
+                    setTimeout(() => {
+                        clone.remove();
+                    }, 2000);
+                }, i * 100);
+            }
+        }
+
+        function calcularResultado() {
+            const probabilidades = [
+                { tipo: 'oro', valor: 0.05 },
+                { tipo: 'plata', valor: 0.15 },
+                { tipo: 'bronce', valor: 0.30 },
+                { tipo: 'nada', valor: 0.50 }
+            ];
+
+            const random = Math.random();
+            let acumulado = 0;
+            let premio = null;
+            
+            for (const prob of probabilidades) {
+                acumulado += prob.valor;
+                if (random <= acumulado) {
+                    premio = prob.tipo;
+                    break;
+                }
+            }
+
+            const simbolosResultado = [];
+            if (premio === 'oro') {
+                simbolosResultado.push('🍒', '🍒', '🍒');
+            } else if (premio === 'plata') {
+                simbolosResultado.push('🥈', '🥈', '🥈');
+            } else if (premio === 'bronce') {
+                simbolosResultado.push('🥉', '🥉', '🥉');
+            } else {
+                simbolosResultado.push(
+                    simbolos[Math.floor(Math.random() * simbolos.length)],
+                    simbolos[Math.floor(Math.random() * simbolos.length)],
+                    simbolos[Math.floor(Math.random() * simbolos.length)]
+                );
+            }
+
+            return { premio, simbolos: simbolosResultado };
+        }
+    </script>
+</body>
+</html>
